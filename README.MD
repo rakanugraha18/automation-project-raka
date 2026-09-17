@@ -8,23 +8,44 @@ Proyek ini mencakup pengujian API CRUD lengkap dengan positive & negative case, 
 
 ## 📋 Daftar Isi
 
-- [Fitur & Skenario Pengujian](#-fitur--skenario-pengujian)
-  - [1. API Testing](#1-api-testing-apilabs)
-  - [2. UI Testing](#2-ui-testing)
+- [🚀 Fitur & Skenario Pengujian](#-fitur--skenario-pengujian)
+  - [1. API Testing (`/api/labs`)](#1-api-testing-apilabs)
+    - [Setup Autentikasi (`beforeAll`)](#setup-autentikasi-beforeall)
+    - [POST `/api/labs`](#post-apilabs)
+    - [GET `/api/labs/{id}`](#get-apilabsid)
+    - [PUT `/api/labs/{id}`](#put-apilabsid)
+    - [DELETE `/api/labs/{id}`](#delete-apilabsid)
 
-- [Struktur Direktori](#-struktur-direktori)
-- [Teknologi & Tools](#-teknologi--tools)
-- [Prasyarat Sistem](#-prasyarat-sistem)
-- [Instalasi Proyek](#-instalasi-proyek)
-- [Cara Menjalankan Pengujian](#-cara-menjalankan-pengujian)
+  - [2. UI Testing](#2-ui-testing)
+    - [Skenario 1 - Verifikasi Halaman Login](#skenario-1---verifikasi-halaman-login)
+    - [Skenario 2 - Login Gagal (Negative)](#skenario-2---login-gagal-negative)
+    - [Skenario 3 - Login Sukses (Positive)](#skenario-3---login-sukses-positive)
+    - [Skenario 4 - Cart & Checkout Flow](#skenario-4---cart--checkout-flow)
+
+- [📁 Struktur Direktori](#-struktur-direktori)
+- [🛠 Teknologi & Tools](#-teknologi--tools)
+- [⚙️ Prasyarat Sistem](#-prasyarat-sistem)
+- [📦 Instalasi Proyek](#-instalasi-proyek)
+  - [1. Clone Repository](#1-clone-repository)
+  - [2. Install Dependencies](#2-install-dependencies)
+  - [3. Install Browser Playwright](#3-install-browser-playwright)
+
+- [🧪 Cara Menjalankan Pengujian](#-cara-menjalankan-pengujian)
   - [Eksekusi Otomatis Lengkap](#eksekusi-otomatis-lengkap)
   - [Eksekusi Spesifik API](#eksekusi-spesifik-api)
   - [Eksekusi Spesifik UI](#eksekusi-spesifik-ui)
-  - [Eksekusi Mode Headed](#eksekusi-mode-headed-browser-tampil)
-  - [Eksekusi dengan UI Runner](#eksekusi-dengan-ui-runner-interactive-mode)
-  - [Eksekusi Codegen](#eksekusi-rekam-skrip-ui-baru-codegen)
+  - [Eksekusi Mode Headed (Browser Tampil)](#eksekusi-mode-headed-browser-tampil)
+  - [Eksekusi dengan UI Runner (Interactive Mode)](#eksekusi-dengan-ui-runner-interactive-mode)
+  - [Eksekusi Rekam Skrip UI Baru (Codegen)](#eksekusi-rekam-skrip-ui-baru-codegen)
 
-- [Laporan Pengujian](#-laporan-pengujian-html-report)
+- [📊 Laporan Pengujian (HTML Report)](#-laporan-pengujian-html-report)
+- [🔄 Recommended Test Flow](#-recommended-test-flow)
+- [🧩 Troubleshooting](#-troubleshooting)
+  - [`test-user.json` belum tersedia](#test-userjson-belum-tersedia)
+  - [Browser Playwright belum tersedia](#browser-playwright-belum-tersedia)
+  - [Ingin melihat proses UI test secara visual](#ingin-melihat-proses-ui-test-secara-visual)
+
+- [👤 Author](#-author)
 
 ---
 
