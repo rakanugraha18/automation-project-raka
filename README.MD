@@ -1,16 +1,17 @@
 # QA Automation Project - Script Labs (API & UI)
 
-Repository ini berisi implementasi otomasi pengujian **End-to-End (E2E)** untuk **API Testing** dan **UI Testing** pada web demo **Script Labs** menggunakan **Playwright** dengan TypeScript.
+Repository ini berisi implementasi otomasi pengujian **End-to-End (E2E)** untuk **API Testing** dan **UI Testing** pada web demo **Script Labs** menggunakan **Playwright** dengan **TypeScript**.
 
-Proyek ini mencakup pengujian API CRUD lengkap (Positive & Negative case), autentikasi dinamis berbasis JWT, serta otomatisasi UI untuk alur login hingga checkout keranjang belanja.
+Proyek ini mencakup pengujian API CRUD lengkap dengan positive & negative case, autentikasi dinamis berbasis JWT, serta otomatisasi UI untuk alur login hingga checkout keranjang belanja.
 
 ---
 
 ## 📋 Daftar Isi
 
 - [Fitur & Skenario Pengujian](#-fitur--skenario-pengujian)
-  - [1. API Testing (`/api/labs`)](#1-api-testing-apilabs)
-  - [2. UI Testing (`https://labs.hendri.me/`)](#2-ui-testing-httpslabshendrime)
+  - [1. API Testing](#1-api-testing-apilabs)
+  - [2. UI Testing](#2-ui-testing)
+
 - [Struktur Direktori](#-struktur-direktori)
 - [Teknologi & Tools](#-teknologi--tools)
 - [Prasyarat Sistem](#-prasyarat-sistem)
@@ -19,8 +20,11 @@ Proyek ini mencakup pengujian API CRUD lengkap (Positive & Negative case), auten
   - [Eksekusi Otomatis Lengkap](#eksekusi-otomatis-lengkap)
   - [Eksekusi Spesifik API](#eksekusi-spesifik-api)
   - [Eksekusi Spesifik UI](#eksekusi-spesifik-ui)
-  - [Eksekusi Mode Headed (Browser Tampil)](#eksekusi-mode-headed-browser-tampil)
-- [Laporan Pengujian (HTML Report)](#-laporan-pengujian-html-report)
+  - [Eksekusi Mode Headed](#eksekusi-mode-headed-browser-tampil)
+  - [Eksekusi dengan UI Runner](#eksekusi-dengan-ui-runner-interactive-mode)
+  - [Eksekusi Codegen](#eksekusi-rekam-skrip-ui-baru-codegen)
+
+- [Laporan Pengujian](#-laporan-pengujian-html-report)
 
 ---
 
@@ -28,40 +32,117 @@ Proyek ini mencakup pengujian API CRUD lengkap (Positive & Negative case), auten
 
 ### 1. API Testing (`/api/labs`)
 
-Pengujian API menggunakan konsep `serial execution` dan pemanfaatan hook `beforeAll` untuk memastikan token JWT dibuat sekali secara dinamis dan digunakan kembali di seluruh request:
+Pengujian API menggunakan konsep **serial execution** dan hook `beforeAll` untuk memastikan token JWT dibuat sekali secara dinamis dan digunakan kembali di seluruh request.
 
-- **Setup Autentikasi (`beforeAll`)**:
-  - Registrasi akun tester unik menggunakan timestamp (`/api/auth/register`).
-  - Autentikasi login untuk mendapatkan token JWT (`/api/auth/login`).
-  - Kredensial aktif disimpan otomatis ke dalam file `test-user.json`.
-- **POST `/api/labs`**:
-  - `[Positive]` Membuat entri lab baru (Status: `200` / `201`).
-  - `[Negative]` Validasi error saat field `title` kosong (Status: `400` / `422`).
-  - `[Negative]` Penolakan akses jika token otentikasi tidak disertakan (Status: `401`).
-- **GET `/api/labs/{id}`**:
-  - `[Positive]` Mengambil data lab spesifik berdasarkan ID valid (Status: `200`).
-  - `[Negative]` Verifikasi respon ketika ID lab tidak ditemukan / invalid (Status: `404`).
-- **PUT `/api/labs/{id}`**:
-  - `[Positive]` Memperbarui title dan deskripsi record lab (Status: `200`).
-  - `[Negative]` Validasi kegagalan update untuk ID yang tidak ada (Status: `404`).
-- **DELETE `/api/labs/{id}`**:
-  - `[Negative]` Penolakan penghapusan tanpa token otentikasi (Status: `401`).
-  - `[Positive]` Menghapus record lab (Status: `200` / `204`) dan memverifikasi data benar-benar hilang (`404`).
-  - `[Negative]` Penolakan penghapusan ulang untuk item yang sudah terhapus (Status: `404`).
+#### Setup Autentikasi (`beforeAll`)
 
-### 2. UI Testing (`https://labs.hendri.me/`)
+- Registrasi akun tester unik menggunakan timestamp melalui `/api/auth/register`.
+- Login untuk mendapatkan token JWT melalui `/api/auth/login`.
+- Kredensial aktif disimpan otomatis ke dalam file `test-user.json`.
 
-Pengujian antarmuka pengguna memvalidasi skenario esensial aplikasi:
+#### POST `/api/labs`
 
-- **Skenario 1 - Verifikasi Halaman Login**: Memastikan input Email Address, Password, serta tombol navigasi interaksi tampil di layar.
-- **Skenario 2 - Login Gagal (Negative)**: Memastikan user tidak dapat login dan katalog tidak terbuka saat password salah.
-- **Skenario 3 - Login Sukses (Positive)**: Membaca kredensial dinamis dari `test-user.json` dan memverifikasi redirect ke katalog produk.
-- **Skenario 4 - CRUD Cart & Checkout Flow**:
-  - Menambahkan produk ke cart (`add-selenium-login-pack`).
-  - Mengubah kuantitas item di keranjang belanja.
-  - Mengisi formulir data checkout (Nama, Email, Note).
-  - Melakukan submit checkout dan memvalidasi pesan sukses (`checkout-success`).
-  - Memverifikasi cart telah kosong kembali setelah transaksi selesai.
+**Positive Case**
+
+- Membuat entri lab baru.
+- Expected status: `200` / `201`.
+
+**Negative Case**
+
+- Validasi error ketika field `title` kosong.
+- Expected status: `400` / `422`.
+- Memastikan request ditolak ketika token autentikasi tidak disertakan.
+- Expected status: `401`.
+
+#### GET `/api/labs/{id}`
+
+**Positive Case**
+
+- Mengambil data lab spesifik berdasarkan ID yang valid.
+- Expected status: `200`.
+
+**Negative Case**
+
+- Memverifikasi response ketika ID lab tidak ditemukan atau invalid.
+- Expected status: `404`.
+
+#### PUT `/api/labs/{id}`
+
+**Positive Case**
+
+- Memperbarui title dan deskripsi record lab.
+- Expected status: `200`.
+
+**Negative Case**
+
+- Memvalidasi kegagalan update untuk ID yang tidak tersedia.
+- Expected status: `404`.
+
+#### DELETE `/api/labs/{id}`
+
+**Negative Case**
+
+- Memastikan penghapusan tanpa token autentikasi ditolak.
+- Expected status: `401`.
+
+**Positive Case**
+
+- Menghapus record lab.
+- Expected status: `200` / `204`.
+- Memverifikasi bahwa data benar-benar sudah hilang dengan melakukan GET.
+- Expected status GET setelah deletion: `404`.
+
+**Negative Case**
+
+- Memastikan penghapusan ulang terhadap item yang sudah dihapus ditolak.
+- Expected status: `404`.
+
+---
+
+### 2. UI Testing
+
+Target aplikasi:
+
+https://labs.hendri.me/
+
+Pengujian UI memvalidasi beberapa skenario utama aplikasi.
+
+#### Skenario 1 - Verifikasi Halaman Login
+
+Memastikan elemen berikut tersedia dan dapat diakses:
+
+- Input **Email Address**
+- Input **Password**
+- Tombol login
+- Elemen navigasi yang diperlukan
+
+#### Skenario 2 - Login Gagal (Negative)
+
+Memastikan user tidak dapat login menggunakan password yang salah dan katalog produk tidak terbuka.
+
+#### Skenario 3 - Login Sukses (Positive)
+
+- Membaca kredensial dinamis dari `test-user.json`.
+- Melakukan proses login.
+- Memverifikasi redirect menuju katalog produk.
+
+#### Skenario 4 - Cart & Checkout Flow
+
+Skenario ini menguji alur transaksi dari penambahan produk hingga checkout.
+
+Flow yang diuji:
+
+1. Menambahkan produk `add-selenium-login-pack` ke cart.
+2. Membuka shopping cart.
+3. Mengubah quantity item.
+4. Mengisi form checkout:
+   - Nama
+   - Email
+   - Note
+
+5. Melakukan submit checkout.
+6. Memvalidasi pesan sukses dengan identifier `checkout-success`.
+7. Memverifikasi cart kembali kosong setelah transaksi selesai.
 
 ---
 
@@ -69,121 +150,250 @@ Pengujian antarmuka pengguna memvalidasi skenario esensial aplikasi:
 
 ```text
 automation-project/
-├── .github/                     # Workflow CI/CD (opsional)
+│
+├── .github/
+│   └── workflows/              # Workflow CI/CD (opsional)
+│
 ├── tests/
 │   ├── api/
-│   │   └── labs-crud.spec.ts    # Test suite API CRUD & Autentikasi
+│   │   └── labs-crud.spec.ts   # Test suite API CRUD & autentikasi
+│   │
 │   └── ui/
-│       └── labs-ui.spec.ts      # Test suite UI Login, Cart, & Checkout
-├── playwright.config.ts         # Konfigurasi global Playwright
-├── test-user.json               # Data user dinamis dari hasil register API
-├── package.json                 # Konfigurasi dependensi project
-└── README.md                    # Dokumentasi proyek
+│       └── labs-ui.spec.ts     # Test suite UI Login, Cart & Checkout
+│
+├── playwright.config.ts        # Konfigurasi global Playwright
+├── test-user.json              # Data user dinamis hasil register API
+├── package.json                # Konfigurasi dependency project
+└── README.md                   # Dokumentasi project
 ```
+
+---
 
 ## 🛠 Teknologi & Tools
 
-- **Core Test Framework**: [Playwright Test](https://playwright.dev/) (\`@playwright/test\`)
-- **Execution Environment & Engine**:
-  - **Chromium**: Browser engine utama untuk pengujian antarmuka web
-  - **Node.js**: Runtime environment JavaScript/TypeScript
-- **Language & Compiler**:
-  - **TypeScript**: Static typing untuk penulisan skrip pengujian yang kokoh
-  - **Node File System (\`fs\`)**: Digunakan untuk menyimpan dan menyinkronkan data antar skrip secara lokal
-- **Validation & Assertion**: Built-in Playwright assertions (\`expect\`, \`toBeVisible\`, \`toContain\`, \`toBeDefined\`)
-- **Reporting Engine**: Playwright Built-in HTML Reporter & Terminal List Reporter
-- **Code Editor**: Visual Studio Code
-- **Version Control**: Git & GitHub
+| Teknologi / Tool             | Penggunaan                                  |
+| ---------------------------- | ------------------------------------------- |
+| **Playwright Test**          | Framework utama untuk API & UI testing      |
+| **TypeScript**               | Bahasa pemrograman                          |
+| **Node.js**                  | JavaScript runtime                          |
+| **Chromium**                 | Browser engine untuk UI testing             |
+| **Node File System (`fs`)**  | Membaca dan menyimpan data `test-user.json` |
+| **Playwright Assertions**    | Validasi hasil pengujian                    |
+| **Playwright HTML Reporter** | Reporting hasil test                        |
+| **Terminal List Reporter**   | Menampilkan hasil test di terminal          |
+| **Visual Studio Code**       | Code editor                                 |
+| **Git & GitHub**             | Version control                             |
 
 ---
 
 ## ⚙️ Prasyarat Sistem
 
-- **Node.js**: Versi \`18.x\` atau lebih baru
-- **NPM**: Versi \`9.x\` atau lebih baru
-- **Operating System**: Windows 10/11, macOS, atau Linux
-- **Koneksi Internet**: Diperlukan untuk mengakses target pengujian API dan UI Script Labs
+Pastikan environment sudah memenuhi persyaratan berikut:
+
+- **Node.js:** versi `18.x` atau lebih baru
+- **NPM:** versi `9.x` atau lebih baru
+- **Operating System:**
+  - Windows 10/11
+  - macOS
+  - Linux
+
+- **Internet Connection:** diperlukan untuk mengakses API dan web Script Labs.
 
 ---
 
 ## 📦 Instalasi Proyek
 
-1. Clone repository ini ke komputer lokal:
-   \`\`\`bash
-   git clone <URL_REPOSITORY_GITHUB_KAMU>
-   cd automation-project-raka
-   \`\`\`
+### 1. Clone Repository
 
-2. Pasang semua dependensi project:
-   \`\`\`bash
-   npm install
-   \`\`\`
+```bash
+git clone <URL_REPOSITORY_GITHUB_KAMU>
+cd automation-project-raka
+```
 
-3. Unduh browser binary yang dibutuhkan oleh Playwright:
-   \`\`\`bash
-   npx playwright install
-   \`\`\`
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Install Browser Playwright
+
+```bash
+npx playwright install
+```
+
+Setelah proses instalasi selesai, project siap digunakan untuk menjalankan test.
 
 ---
 
 ## 🧪 Cara Menjalankan Pengujian
 
-> ⚠️ **Catatan Penting**: Jalankan pengujian **API terlebih dahulu** agar file \`test-user.json\` terbuat dan terisi akun valid dari database sebelum menjalankan suite UI.
+> ⚠️ **Catatan Penting:**
+> Jalankan pengujian **API terlebih dahulu** agar file `test-user.json` dibuat dan berisi akun tester yang valid sebelum menjalankan UI test.
+
+---
 
 ### Eksekusi Otomatis Lengkap
 
-Menjalankan seluruh file pengujian (API dan UI) di terminal:
-\`\`\`bash
+Menjalankan seluruh test suite API dan UI:
+
+```bash
 npx playwright test
-\`\`\`
+```
+
+---
 
 ### Eksekusi Spesifik API
 
-Hanya menjalankan pengujian endpoint CRUD dan otentikasi API:
-\`\`\`bash
+Menjalankan hanya test API:
+
+```bash
 npx playwright test tests/api
-\`\`\`
+```
+
+Atau secara spesifik:
+
+```bash
+npx playwright test tests/api/labs-crud.spec.ts
+```
+
+---
 
 ### Eksekusi Spesifik UI
 
-Hanya menjalankan pengujian otomasi antarmuka pengguna:
-\`\`\`bash
+Menjalankan hanya test UI:
+
+```bash
 npx playwright test tests/ui
-\`\`\`
+```
+
+Atau secara spesifik:
+
+```bash
+npx playwright test tests/ui/labs-ui.spec.ts
+```
+
+---
 
 ### Eksekusi Mode Headed (Browser Tampil)
 
-Menjalankan pengujian UI dengan menampilkan jendela browser secara visual:
-\`\`\`bash
+Menjalankan UI test dengan menampilkan browser secara visual:
+
+```bash
 npx playwright test tests/ui --headed
-\`\`\`
+```
+
+---
 
 ### Eksekusi dengan UI Runner (Interactive Mode)
 
-Membuka antarmuka interaktif bawaan Playwright untuk debugging langkah per langkah:
-\`\`\`bash
+Membuka interface interaktif bawaan Playwright untuk debugging:
+
+```bash
 npx playwright test --ui
-\`\`\`
+```
+
+---
 
 ### Eksekusi Rekam Skrip UI Baru (Codegen)
 
-Membuka generator selector otomatis bawaan Playwright:
-\`\`\`bash
+Membuka Playwright Codegen untuk membantu membuat selector dan test script:
+
+```bash
 npx playwright codegen https://labs.hendri.me/
-\`\`\`
+```
 
 ---
 
 ## 📊 Laporan Pengujian (HTML Report)
 
-Playwright secara otomatis menghasilkan dashboard laporan HTML komprehensif setelah pengujian selesai. Laporan mencakup:
+Playwright menyediakan **HTML Reporter** untuk melihat hasil pengujian secara visual.
 
-- Status kelulusan setiap skenario (_Passed / Failed / Skipped_)
-- Durasi waktu respon dari tiap pemanggilan API
-- Assertion detail dan log payload data
-- Cuplikan layar otomatis jika terjadi kegagalan pengujian
+Laporan dapat digunakan untuk melihat:
 
-Untuk membuka laporan pengujian:
-\`\`\`bash
+- Status setiap test:
+  - Passed
+  - Failed
+  - Skipped
+
+- Durasi eksekusi test
+- Detail assertion
+- Error dan stack trace
+- Test steps
+- Screenshot atau attachment ketika tersedia
+
+Untuk membuka HTML report:
+
+```bash
 npx playwright show-report
-\`\`\`\n\`; fs.writeFileSync('PANDUAN_TOOLS.md', content); console.log('✅ File PANDUAN_TOOLS.md berhasil dibuat!');"
+```
+
+---
+
+## 🔄 Recommended Test Flow
+
+Untuk menjalankan project dari kondisi awal, gunakan urutan berikut:
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Install Playwright browsers
+npx playwright install
+
+# 3. Jalankan API test
+npx playwright test tests/api
+
+# 4. Jalankan UI test
+npx playwright test tests/ui
+
+# 5. Jalankan seluruh test suite
+npx playwright test
+
+# 6. Buka HTML report
+npx playwright show-report
+```
+
+---
+
+## 🧩 Troubleshooting
+
+### `test-user.json` belum tersedia
+
+Pastikan API test dijalankan terlebih dahulu:
+
+```bash
+npx playwright test tests/api
+```
+
+File `test-user.json` akan dibuat atau diperbarui berdasarkan proses registrasi dan autentikasi API.
+
+### Browser Playwright belum tersedia
+
+Jalankan:
+
+```bash
+npx playwright install
+```
+
+### Ingin melihat proses UI test secara visual
+
+Gunakan:
+
+```bash
+npx playwright test tests/ui --headed
+```
+
+Untuk debugging interaktif:
+
+```bash
+npx playwright test --ui
+```
+
+---
+
+## 👤 Author
+
+**Raka Nugraha**
+
+QA Automation Project — Script Labs
