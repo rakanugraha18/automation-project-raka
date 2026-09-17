@@ -227,7 +227,7 @@ Pastikan environment sudah memenuhi persyaratan berikut:
 ### 1. Clone Repository
 
 ```bash
-git clone <https://github.com/rakanugraha18/automation-project-raka>
+git clone https://github.com/rakanugraha18/automation-project-raka
 cd automation-project-raka
 ```
 
