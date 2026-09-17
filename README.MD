@@ -173,7 +173,7 @@ Flow yang diuji:
 automation-project/
 │
 ├── .github/
-│   └── workflows/              # Workflow CI/CD (opsional)
+│   └── workflows/              # Workflow CI/CD (soon)
 │
 ├── tests/
 │   ├── api/
