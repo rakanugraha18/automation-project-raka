@@ -41,8 +41,8 @@ Proyek ini mencakup pengujian API CRUD lengkap dengan positive & negative case, 
 - [📊 Laporan Pengujian (HTML Report)](#-laporan-pengujian-html-report)
 - [🔄 Recommended Test Flow](#-recommended-test-flow)
 - [🧩 Troubleshooting](#-troubleshooting)
-  - [`test-user.json` belum tersedia](#test-userjson-belum-tersedia)
-  - [Browser Playwright belum tersedia](#browser-playwright-belum-tersedia)
+  - [`test-user.json`](#test-userjson-belum-tersedia)
+  - [Browser Playwright](#browser-playwright-belum-tersedia)
   - [Ingin melihat proses UI test secara visual](#ingin-melihat-proses-ui-test-secara-visual)
 
 - [👤 Author](#-author)
@@ -379,7 +379,7 @@ npx playwright show-report
 
 ## 🧩 Troubleshooting
 
-### `test-user.json` belum tersedia
+### `test-user.json`
 
 Pastikan API test dijalankan terlebih dahulu:
 
@@ -389,7 +389,7 @@ npx playwright test tests/api
 
 File `test-user.json` akan dibuat atau diperbarui berdasarkan proses registrasi dan autentikasi API.
 
-### Browser Playwright belum tersedia
+### Browser Playwright
 
 Jalankan:
 
