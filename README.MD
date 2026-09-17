@@ -81,7 +81,7 @@ automation-project/
 └── README.md                    # Dokumentasi proyek
 ```
 
-node -e "const fs = require('fs'); const content = \`## 🛠 Teknologi & Tools
+## 🛠 Teknologi & Tools
 
 - **Core Test Framework**: [Playwright Test](https://playwright.dev/) (\`@playwright/test\`)
 - **Execution Environment & Engine**:
