@@ -80,3 +80,110 @@ automation-project/
 ├── package.json                 # Konfigurasi dependensi project
 └── README.md                    # Dokumentasi proyek
 ```
+
+node -e "const fs = require('fs'); const content = \`## 🛠 Teknologi & Tools
+
+- **Core Test Framework**: [Playwright Test](https://playwright.dev/) (\`@playwright/test\`)
+- **Execution Environment & Engine**:
+  - **Chromium**: Browser engine utama untuk pengujian antarmuka web
+  - **Node.js**: Runtime environment JavaScript/TypeScript
+- **Language & Compiler**:
+  - **TypeScript**: Static typing untuk penulisan skrip pengujian yang kokoh
+  - **Node File System (\`fs\`)**: Digunakan untuk menyimpan dan menyinkronkan data antar skrip secara lokal
+- **Validation & Assertion**: Built-in Playwright assertions (\`expect\`, \`toBeVisible\`, \`toContain\`, \`toBeDefined\`)
+- **Reporting Engine**: Playwright Built-in HTML Reporter & Terminal List Reporter
+- **Code Editor**: Visual Studio Code
+- **Version Control**: Git & GitHub
+
+---
+
+## ⚙️ Prasyarat Sistem
+
+- **Node.js**: Versi \`18.x\` atau lebih baru
+- **NPM**: Versi \`9.x\` atau lebih baru
+- **Operating System**: Windows 10/11, macOS, atau Linux
+- **Koneksi Internet**: Diperlukan untuk mengakses target pengujian API dan UI Script Labs
+
+---
+
+## 📦 Instalasi Proyek
+
+1. Clone repository ini ke komputer lokal:
+   \`\`\`bash
+   git clone <URL_REPOSITORY_GITHUB_KAMU>
+   cd automation-project-raka
+   \`\`\`
+
+2. Pasang semua dependensi project:
+   \`\`\`bash
+   npm install
+   \`\`\`
+
+3. Unduh browser binary yang dibutuhkan oleh Playwright:
+   \`\`\`bash
+   npx playwright install
+   \`\`\`
+
+---
+
+## 🧪 Cara Menjalankan Pengujian
+
+> ⚠️ **Catatan Penting**: Jalankan pengujian **API terlebih dahulu** agar file \`test-user.json\` terbuat dan terisi akun valid dari database sebelum menjalankan suite UI.
+
+### Eksekusi Otomatis Lengkap
+
+Menjalankan seluruh file pengujian (API dan UI) di terminal:
+\`\`\`bash
+npx playwright test
+\`\`\`
+
+### Eksekusi Spesifik API
+
+Hanya menjalankan pengujian endpoint CRUD dan otentikasi API:
+\`\`\`bash
+npx playwright test tests/api
+\`\`\`
+
+### Eksekusi Spesifik UI
+
+Hanya menjalankan pengujian otomasi antarmuka pengguna:
+\`\`\`bash
+npx playwright test tests/ui
+\`\`\`
+
+### Eksekusi Mode Headed (Browser Tampil)
+
+Menjalankan pengujian UI dengan menampilkan jendela browser secara visual:
+\`\`\`bash
+npx playwright test tests/ui --headed
+\`\`\`
+
+### Eksekusi dengan UI Runner (Interactive Mode)
+
+Membuka antarmuka interaktif bawaan Playwright untuk debugging langkah per langkah:
+\`\`\`bash
+npx playwright test --ui
+\`\`\`
+
+### Eksekusi Rekam Skrip UI Baru (Codegen)
+
+Membuka generator selector otomatis bawaan Playwright:
+\`\`\`bash
+npx playwright codegen https://labs.hendri.me/
+\`\`\`
+
+---
+
+## 📊 Laporan Pengujian (HTML Report)
+
+Playwright secara otomatis menghasilkan dashboard laporan HTML komprehensif setelah pengujian selesai. Laporan mencakup:
+
+- Status kelulusan setiap skenario (_Passed / Failed / Skipped_)
+- Durasi waktu respon dari tiap pemanggilan API
+- Assertion detail dan log payload data
+- Cuplikan layar otomatis jika terjadi kegagalan pengujian
+
+Untuk membuka laporan pengujian:
+\`\`\`bash
+npx playwright show-report
+\`\`\`\n\`; fs.writeFileSync('PANDUAN_TOOLS.md', content); console.log('✅ File PANDUAN_TOOLS.md berhasil dibuat!');"
