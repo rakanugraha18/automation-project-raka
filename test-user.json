@@ -1,4 +1,5 @@
 {
-  "email": "tester_1789489521517@example.com",
-  "password": "Password123!"
+  "email": "tester_1789621279766@example.com",
+  "password": "Password123!",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MjBjNDdkOC0zMGE2LTRmNGQtYTQ3ZC1lYmJmY2RiZDEyNzAiLCJlbWFpbCI6InRlc3Rlcl8xNzg5NjIxMjc5NzY2QGV4YW1wbGUuY29tIiwicm9sZSI6InVzZXIiLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3ODk2MjEyODgsImV4cCI6MTc4OTcwNzY4OH0.K8dF-4BTXXaJPM7KjjNqFnZiA-Zyq4SmJVX-na0o2js"
 }
